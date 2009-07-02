@@ -20,6 +20,8 @@ production:
   <<: *login
   encoding: utf8
 " >> config/database.yml
+
+    echo "GRANT SUPER ON *.* TO ${WC_APP_NAME}@localhost;" | mysql -u root -p${WC_DB_PASSWORD}
 fi
 
 if [ "${WC_DB_ENGINE}" == "postgresql" ]; then
@@ -33,5 +35,7 @@ production:
 fi
 
 RAILS_ENV=production rake db:create
+RAILS_ENV=production rake crm:setup
+
 chown -R www-data *
 
